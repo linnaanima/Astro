@@ -1,12 +1,4 @@
-# Dark Mode Toggle
-dark_mode = st.sidebar.toggle(
-    "🌙 Dark Mode",
-    value=False,
-    help="Dunkle Karten für bessere Nachtsicht"
-)
-
-# Erweiterte Karten-Optionen
-with simport streamlit as st
+import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
@@ -500,13 +492,39 @@ dark_mode = st.sidebar.toggle(
     help="Dunkle Karten für bessere Nachtsicht"
 )
 
-# Map Style basierend auf Dark Mode
+# Erweiterte Karten-Optionen
+with st.sidebar.expander("🗺️ Erweiterte Karten-Optionen"):
+    if dark_mode:
+        map_style_options = {
+            "Carto Dark Matter": "carto-darkmatter",
+            "Stamen Toner": "stamen-toner",
+            "Satellite": "satellite",
+            "Satellite Streets": "satellite-streets"
+        }
+        default_style = "Carto Dark Matter"
+    else:
+        map_style_options = {
+            "Open Street Map": "open-street-map", 
+            "Carto Positron": "carto-positron",
+            "Stamen Terrain": "stamen-terrain",
+            "White Background": "white-bg"
+        }
+        default_style = "Open Street Map"
+    
+    selected_style = st.selectbox(
+        "Karten-Style wählen:",
+        options=list(map_style_options.keys()),
+        index=0,
+        help="Verschiedene Karten-Stile für unterschiedliche Bedürfnisse"
+    )
+    
+    map_style = map_style_options[selected_style]
+
+# Plot Template basierend auf Dark Mode
 if dark_mode:
-    map_style = "carto-darkmatter"
     plot_template = "plotly_dark"
     st.sidebar.success("🌙 Dark Mode aktiviert")
 else:
-    map_style = "open-street-map"
     plot_template = "plotly"
     st.sidebar.info("☀️ Light Mode aktiviert")
 
