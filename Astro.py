@@ -1,4 +1,12 @@
-import streamlit as st
+# Dark Mode Toggle
+dark_mode = st.sidebar.toggle(
+    "🌙 Dark Mode",
+    value=False,
+    help="Dunkle Karten für bessere Nachtsicht"
+)
+
+# Erweiterte Karten-Optionen
+with simport streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
@@ -485,6 +493,23 @@ st.sidebar.success(f"✅ {len(df_specific)} spezifische Orte geladen")
 # Sidebar für Filter
 st.sidebar.header("🔍 Filter & Einstellungen")
 
+# Dark Mode Toggle
+dark_mode = st.sidebar.toggle(
+    "🌙 Dark Mode",
+    value=False,
+    help="Dunkle Karten für bessere Nachtsicht"
+)
+
+# Map Style basierend auf Dark Mode
+if dark_mode:
+    map_style = "carto-darkmatter"
+    plot_template = "plotly_dark"
+    st.sidebar.success("🌙 Dark Mode aktiviert")
+else:
+    map_style = "open-street-map"
+    plot_template = "plotly"
+    st.sidebar.info("☀️ Light Mode aktiviert")
+
 # Filter für Bortle-Skala
 bortle_filter = st.sidebar.slider(
     "Maximale Bortle-Skala (1 = dunkelster Himmel)",
@@ -548,8 +573,9 @@ with tab1:
     )
     
     fig_map.update_layout(
-        mapbox_style="open-street-map",
-        margin={"r":0,"t":50,"l":0,"b":0}
+        mapbox_style=map_style,
+        margin={"r":0,"t":50,"l":0,"b":0},
+        template=plot_template
     )
     
     fig_map.update_coloraxes(
@@ -559,13 +585,23 @@ with tab1:
     st.plotly_chart(fig_map, use_container_width=True)
     
     # Legende
-    st.markdown("""
-    **Legende:**
-    - 🔵 **Punktgröße**: Anzahl klarer Nächte pro Jahr
-    - 🎨 **Farbe**: Bortle-Skala (dunkelblau = beste Bedingungen)
-    - **Bortle 1**: Perfekte Dunkelheit (Milchstraße deutlich sichtbar)
-    - **Bortle 2-3**: Exzellente bis sehr gute Bedingungen
-    """)
+    if dark_mode:
+        st.markdown("""
+        **🌙 Dark Mode Legende:**
+        - 🔵 **Punktgröße**: Anzahl klarer Nächte pro Jahr
+        - 🎨 **Farbe**: Bortle-Skala (dunkle Punkte = beste Bedingungen)
+        - **Bortle 1**: Perfekte Dunkelheit (Milchstraße deutlich sichtbar)
+        - **Bortle 2-3**: Exzellente bis sehr gute Bedingungen
+        - **Dark Map**: Optimiert für nächtliche Planung 🌌
+        """)
+    else:
+        st.markdown("""
+        **Legende:**
+        - 🔵 **Punktgröße**: Anzahl klarer Nächte pro Jahr
+        - 🎨 **Farbe**: Bortle-Skala (dunkelblau = beste Bedingungen)
+        - **Bortle 1**: Perfekte Dunkelheit (Milchstraße deutlich sichtbar)
+        - **Bortle 2-3**: Exzellente bis sehr gute Bedingungen
+        """)
 
 with tab2:
     # Spezifische Beobachtungsplätze
@@ -619,8 +655,9 @@ with tab2:
     )
     
     fig_specific.update_layout(
-        mapbox_style="open-street-map",
-        margin={"r":0,"t":50,"l":0,"b":0}
+        mapbox_style=map_style,
+        margin={"r":0,"t":50,"l":0,"b":0},
+        template=plot_template
     )
     
     st.plotly_chart(fig_specific, use_container_width=True)
@@ -670,7 +707,8 @@ with tab3:
             x='Bortle_Skala',
             title='Verteilung der Bortle-Skala',
             color_discrete_sequence=['#1f77b4'],
-            labels={'Bortle_Skala': 'Bortle-Skala', 'count': 'Anzahl Standorte'}
+            labels={'Bortle_Skala': 'Bortle-Skala', 'count': 'Anzahl Standorte'},
+            template=plot_template
         )
         fig_bortle.update_layout(showlegend=False)
         st.plotly_chart(fig_bortle, use_container_width=True)
@@ -680,7 +718,8 @@ with tab3:
             filtered_df,
             names='Typ',
             title='Standort-Typen',
-            color_discrete_sequence=px.colors.qualitative.Set3
+            color_discrete_sequence=px.colors.qualitative.Set3,
+            template=plot_template
         )
         st.plotly_chart(fig_type, use_container_width=True)
     
@@ -699,7 +738,8 @@ with tab3:
                 'Klare_Nächte_Jahr': 'Klare Nächte/Jahr',
                 'Luftfeuchtigkeit_%': 'Luftfeuchtigkeit (%)'
             },
-            color_continuous_scale='Blues_r'
+            color_continuous_scale='Blues_r',
+            template=plot_template
         )
         st.plotly_chart(fig_scatter, use_container_width=True)
         
@@ -712,7 +752,8 @@ with tab3:
             orientation='h',
             title='Top 10 Standorte nach klaren Nächten',
             color='Bortle_Skala',
-            color_continuous_scale='Blues_r'
+            color_continuous_scale='Blues_r',
+            template=plot_template
         )
         fig_bar.update_layout(yaxis={'categoryorder':'total ascending'})
         st.plotly_chart(fig_bar, use_container_width=True)
@@ -805,6 +846,10 @@ st.sidebar.markdown(f"""
 - Rote Taschenlampe verwenden
 - Apps: PhotoPills, SkySafari
 - GPS-Koordinaten offline speichern
+
+**🗺️ Karten-Modi:**
+- **☀️ Light Mode**: Helle Karte für Tagesplanung
+- **🌙 Dark Mode**: Dunkle Karte für Nachtsicht
 """)
 
 # Zusammenfassung anzeigen
