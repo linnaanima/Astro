@@ -201,529 +201,254 @@ class MultiSourceWeatherAPI:
         
         return max(min(base_clear, 350), 50)
 
-# Massiv erweiterte Standort-Datenbank
+# Ausgewogene Standort-Datenbank mit exakten Listen
 @st.cache_data(ttl=24*3600)
 def load_comprehensive_locations():
-    """Erweiterte Datenbank mit 150+ Standorten weltweit"""
+    """Erweiterte Datenbank mit 100 sorgfältig ausgewählten Standorten weltweit"""
     
+    # Exakt 100 Standorte - alle Listen haben die gleiche Länge
     locations = {
         'Name': [
-            # CHILE - Weltklasse Astronomie
+            # CHILE (8 Standorte)
             'Atacama-Wüste', 'ALMA Observatory', 'Paranal Observatory', 'La Silla Observatory',
-            'Las Campanas Observatory', 'Cerro Tololo Observatory', 'Gemini South',
-            'Elqui Valley', 'Valle de la Luna', 'Chajnantor Plateau',
+            'Las Campanas Observatory', 'Cerro Tololo Observatory', 'Elqui Valley', 'Valle de la Luna',
             
-            # USA - Umfassende Abdeckung
-            'Mauna Kea Hawaii', 'Mauna Loa Hawaii', 'Haleakala Hawaii',
-            'Death Valley California', 'Joshua Tree California', 'Anza-Borrego California',
-            'Mojave Preserve California', 'Big Sur California', 'Mount Wilson California',
-            'Palomar Observatory California', 'Lick Observatory California',
-            'Big Bend Texas', 'McDonald Observatory Texas', 'Enchanted Rock Texas',
-            'Cherry Springs Pennsylvania', 'Spruce Knob West Virginia', 'Shenandoah Virginia',
-            'Acadia Maine', 'Katahdin Woods Maine',
-            'Bryce Canyon Utah', 'Capitol Reef Utah', 'Arches Utah', 'Natural Bridges Utah',
-            'Dead Horse Point Utah', 'Goblin Valley Utah', 'Great Basin Nevada',
-            'Lake Tahoe California', 'Yosemite California', 'Sequoia California',
-            'Grand Canyon Arizona', 'Sedona Arizona', 'Flagstaff Arizona', 'Lowell Observatory Arizona',
-            'Chaco New Mexico', 'Very Large Array New Mexico', 'Capulin Volcano New Mexico',
-            'Black Canyon Colorado', 'Great Sand Dunes Colorado', 'Rocky Mountain Colorado',
-            'Yellowstone Wyoming', 'Grand Teton Wyoming', 'Devils Tower Wyoming',
-            'Badlands South Dakota', 'Theodore Roosevelt North Dakota',
-            'Glacier Montana', 'Glacier Bay Alaska', 'Denali Alaska', 'Fairbanks Alaska',
+            # USA (25 Standorte)
+            'Mauna Kea Hawaii', 'Death Valley California', 'Joshua Tree California', 'Bryce Canyon Utah',
+            'Capitol Reef Utah', 'Arches Utah', 'Great Basin Nevada', 'Grand Canyon Arizona',
+            'Big Bend Texas', 'McDonald Observatory Texas', 'Cherry Springs Pennsylvania',
+            'Shenandoah Virginia', 'Acadia Maine', 'Yellowstone Wyoming', 'Grand Teton Wyoming',
+            'Badlands South Dakota', 'Glacier Montana', 'Denali Alaska', 'Fairbanks Alaska',
+            'Palomar Observatory California', 'Mount Wilson California', 'Lowell Observatory Arizona',
+            'Very Large Array New Mexico', 'Black Canyon Colorado', 'Great Sand Dunes Colorado',
             
-            # KANADA - Dark Sky Preserves
-            'Jasper Nationalpark', 'Banff Nationalpark', 'Waterton Nationalpark',
-            'Mont-Mégantic Quebec', 'Algonquin Ontario', 'Killarney Ontario', 'Torrance Barrens Ontario',
-            'Point Pelee Ontario', 'Long Point Ontario', 'Muskoka Ontario',
-            'Cypress Hills Alberta', 'Wood Buffalo Alberta', 'Grasslands Saskatchewan',
-            'Riding Mountain Manitoba', 'Fundy New Brunswick', 'Kejimkujik Nova Scotia',
+            # KANADA (8 Standorte)
+            'Jasper Nationalpark', 'Mont-Mégantic Quebec', 'Algonquin Ontario', 'Killarney Ontario',
+            'Point Pelee Ontario', 'Cypress Hills Alberta', 'Wood Buffalo Alberta', 'Kejimkujik Nova Scotia',
             
-            # EUROPA - Vielfältige Standorte
-            # Spanien
+            # EUROPA (25 Standorte)
+            # Spanien (8)
             'Roque de los Muchachos La Palma', 'Teide Observatorium Teneriffa', 'Calar Alto Andalusien',
-            'Montsec Katalonien', 'Picos de Europa Asturien', 'Sierra Nevada Andalusien',
-            'Sierra de Gredos', 'Extremadura', 'Pyrénées Aragonien', 'Ordesa Nationalpark',
-            'Fuerteventura', 'Lanzarote', 'Gran Canaria', 'La Gomera',
+            'Montsec Katalonien', 'Picos de Europa', 'Sierra Nevada', 'Extremadura', 'Fuerteventura',
+            # Deutschland (5)
+            'Zugspitze Bayern', 'Wasserkuppe Rhön', 'Westhavelland Brandenburg', 'Eifel Nationalpark', 'Feldberg Schwarzwald',
+            # Frankreich (4)
+            'Pic du Midi Observatorium', 'Mont-Blanc Chamonix', 'Cévennes Nationalpark', 'Vosges du Nord',
+            # Andere Europa (8)
+            'Alqueva Portugal', 'Brecon Beacons Wales', 'Galloway Forest Schottland', 'Kerry Dark Sky Reserve Irland',
+            'Jungfraujoch Schweiz', 'Hohe Tauern Österreich', 'Zselic Starry Sky Park Ungarn', 'Møn Dänemark',
             
-            # Frankreich
-            'Pic du Midi Observatorium', 'Observatoire de Haute-Provence', 'Mont-Blanc Chamonix',
-            'Cévennes Nationalpark', 'Vosges du Nord', 'Causses du Quercy', 'Pyrénées Nationalpark',
-            'Vanoise Nationalpark', 'Mercantour Nationalpark', 'Écrins Nationalpark',
+            # OZEANIEN (10 Standorte)
+            'Aoraki Mackenzie Neuseeland', 'Great Barrier Island Neuseeland', 'Lake Tekapo Neuseeland',
+            'Uluru Australien', 'Flinders Ranges Australien', 'Warrumbungle Australien',
+            'Nullarbor Plain Australien', 'Gibson Desert Australien', 'Kimberley Australien', 'Tasmania Dark Sky Australien',
             
-            # Deutschland
-            'Zugspitze Bayern', 'Wasserkuppe Rhön', 'Brocken Harz', 'Feldberg Schwarzwald',
-            'Westhavelland Brandenburg', 'Eifel Nationalpark', 'Spiegelau Bayern',
-            'Hoher Meißner Hessen', 'Wendelstein Bayern', 'Fichtelgebirge Bayern',
+            # AFRIKA (12 Standorte)
+            'NamibRand Namibia', 'Kalahari Botswana', 'Karoo Südafrika', 'Drakensberg Südafrika',
+            'Sahara Marokko', 'Atlas Mountains Marokko', 'Sahara Algerien', 'Hoggar Mountains Algerien',
+            'Ethiopian Highlands Äthiopien', 'Simien Mountains Äthiopien', 'Air Mountains Niger', 'Tibesti Chad',
             
-            # Andere Europa
-            'Alqueva Portugal', 'Monsaraz Portugal', 'Gerês Portugal', 'Madeira Portugal', 'Azoren Portugal',
-            'Brecon Beacons Wales', 'Snowdonia Wales', 'Galloway Forest Schottland', 'Cairngorms Schottland',
-            'Kerry Dark Sky Reserve Irland', 'Mayo Dark Sky Park Irland',
-            'Zselic Starry Sky Park Ungarn', 'Hortobágy Ungarn', 'Bükk Ungarn',
-            'Møn Dänemark', 'Læsø Dänemark',
-            'Aspromonte Italien', 'Abruzzo Italien', 'Dolomiten Italien', 'Sizilien Ätna Italien',
-            'Jungfraujoch Schweiz', 'Matterhorn Schweiz', 'Engadin Schweiz', 'Verzasca Schweiz',
-            'Hohe Tauern Österreich', 'Ötztal Österreich', 'Gesäuse Österreich',
-            'Tatras Polen', 'Bieszczady Polen', 'Carpathians Rumänien', 'Bucegi Rumänien',
-            
-            # NEUSEELAND & AUSTRALIEN
-            'Aoraki Mackenzie Neuseeland', 'Great Barrier Island Neuseeland', 'Rakiura Stewart Island Neuseeland',
-            'Lake Tekapo Neuseeland', 'Franz Josef Neuseeland', 'Milford Sound Neuseeland',
-            'Uluru Australien', 'Kata Tjuta Australien', 'Kings Canyon Australien',
-            'Flinders Ranges Australien', 'Grampians Australien', 'Blue Mountains Australien',
-            'Warrumbungle Australien', 'Little Desert Australien', 'Mungo Australien',
-            'Nullarbor Plain Australien', 'Gibson Desert Australien', 'Great Sandy Desert Australien',
-            'Pilbara Australien', 'Kimberley Australien', 'Tasmania Dark Sky Australien',
-            
-            # AFRIKA - Südhalbkugel Highlights
-            'NamibRand Namibia', 'Sossusvlei Namibia', 'Fish River Canyon Namibia',
-            'Kalahari Botswana', 'Okavango Delta Botswana', 'Makgadikgadi Botswana',
-            'Karoo Südafrika', 'Tankwa Karoo Südafrika', 'Cederberg Südafrika', 'Drakensberg Südafrika',
-            'Richtersveld Südafrika', 'Augrabies Südafrika', 'Kgalagadi Südafrika',
-            'Sahara Marokko', 'Atlas Mountains Marokko', 'Anti-Atlas Marokko',
-            'Sahara Algerien', 'Hoggar Mountains Algerien', 'Tassili n\'Ajjer Algerien',
-            'Tibesti Chad', 'Air Mountains Niger', 'Ennedi Plateau Chad',
-            'Ethiopian Highlands Äthiopien', 'Simien Mountains Äthiopien', 'Bale Mountains Äthiopien',
-            
-            # ASIEN - Hochgebirge & Wüsten
-            # Indien & Himalaya
-            'Ladakh Indien', 'Spiti Valley Indien', 'Nubra Valley Indien', 'Zanskar Indien',
-            'Changthang Plateau Indien', 'Hemis Nationalpark Indien', 'Pin Valley Indien',
-            'Kinnaur Indien', 'Lahaul Indien', 'Dharamshala Indien',
-            'Rajasthan Thar Desert Indien', 'Kutch Gujarat Indien', 'Western Ghats Indien',
-            
-            # Nepal & Tibet
-            'Everest Base Camp Nepal', 'Annapurna Region Nepal', 'Mustang Nepal', 'Manaslu Nepal',
-            'Langtang Nepal', 'Dolpo Nepal', 'Khumbu Nepal',
-            'Tibet Plateau China', 'Mount Kailash Tibet', 'Ngari Tibet',
-            
-            # Zentralasien
-            'Pamir Tadschikistan', 'Tian Shan Kirgisistan', 'Altai Mountains Mongolei',
-            'Gobi Desert Mongolei', 'Mongolische Steppe', 'Khangai Mountains Mongolei',
-            'Karakorum Pakistan', 'K2 Base Camp Pakistan', 'Hunza Valley Pakistan',
-            'Skardu Pakistan', 'Deosai Plains Pakistan',
-            
-            # China & Ostasien
-            'Taklamakan Desert China', 'Xinjiang China', 'Inner Mongolia China',
-            'Qinghai Plateau China', 'Kunlun Mountains China', 'Qilian Mountains China',
-            'Atacama-like Qaidam China', 'Yellow River Source China'
+            # ASIEN (12 Standorte)
+            'Ladakh Indien', 'Spiti Valley Indien', 'Changthang Plateau Indien', 'Thar Desert Indien',
+            'Everest Base Camp Nepal', 'Annapurna Region Nepal', 'Mustang Nepal',
+            'Tibet Plateau China', 'Gobi Desert Mongolei', 'Pamir Tadschikistan',
+            'Karakorum Pakistan', 'Taklamakan Desert China'
         ],
         
         'Land': [
-            # Chile
-            'Chile', 'Chile', 'Chile', 'Chile', 'Chile', 'Chile', 'Chile', 'Chile', 'Chile', 'Chile',
+            # Chile (8)
+            'Chile', 'Chile', 'Chile', 'Chile', 'Chile', 'Chile', 'Chile', 'Chile',
             
-            # USA (50 Standorte)
+            # USA (25)
             'USA', 'USA', 'USA', 'USA', 'USA', 'USA', 'USA', 'USA', 'USA', 'USA',
-            'USA', 'USA', 'USA', 'USA', 'USA', 'USA', 'USA', 'USA', 'USA',
-            'USA', 'USA', 'USA', 'USA', 'USA', 'USA', 'USA', 'USA', 'USA',
-            'USA', 'USA', 'USA', 'USA', 'USA', 'USA', 'USA', 'USA', 'USA',
-            'USA', 'USA', 'USA', 'USA', 'USA', 'USA', 'USA', 'USA', 'USA',
-            'USA', 'USA', 'USA', 'USA', 'USA', 'USA',
+            'USA', 'USA', 'USA', 'USA', 'USA', 'USA', 'USA', 'USA', 'USA', 'USA',
+            'USA', 'USA', 'USA', 'USA', 'USA',
             
-            # Kanada (16 Standorte)
-            'Kanada', 'Kanada', 'Kanada', 'Kanada', 'Kanada', 'Kanada', 'Kanada',
-            'Kanada', 'Kanada', 'Kanada', 'Kanada', 'Kanada', 'Kanada',
-            'Kanada', 'Kanada', 'Kanada',
+            # Kanada (8)
+            'Kanada', 'Kanada', 'Kanada', 'Kanada', 'Kanada', 'Kanada', 'Kanada', 'Kanada',
             
-            # Europa (70 Standorte)
-            # Spanien (14)
-            'Spanien', 'Spanien', 'Spanien', 'Spanien', 'Spanien', 'Spanien',
+            # Europa (25)
+            # Spanien (8)
             'Spanien', 'Spanien', 'Spanien', 'Spanien', 'Spanien', 'Spanien', 'Spanien', 'Spanien',
-            
-            # Frankreich (10)
-            'Frankreich', 'Frankreich', 'Frankreich', 'Frankreich', 'Frankreich',
-            'Frankreich', 'Frankreich', 'Frankreich', 'Frankreich', 'Frankreich',
-            
-            # Deutschland (10)
+            # Deutschland (5)
             'Deutschland', 'Deutschland', 'Deutschland', 'Deutschland', 'Deutschland',
-            'Deutschland', 'Deutschland', 'Deutschland', 'Deutschland', 'Deutschland',
+            # Frankreich (4)
+            'Frankreich', 'Frankreich', 'Frankreich', 'Frankreich',
+            # Andere Europa (8)
+            'Portugal', 'Wales', 'Schottland', 'Irland', 'Schweiz', 'Österreich', 'Ungarn', 'Dänemark',
             
-            # Andere Europa (36)
-            'Portugal', 'Portugal', 'Portugal', 'Portugal', 'Portugal',
-            'Wales', 'Wales', 'Schottland', 'Schottland',
-            'Irland', 'Irland',
-            'Ungarn', 'Ungarn', 'Ungarn',
-            'Dänemark', 'Dänemark',
-            'Italien', 'Italien', 'Italien', 'Italien',
-            'Schweiz', 'Schweiz', 'Schweiz', 'Schweiz',
-            'Österreich', 'Österreich', 'Österreich',
-            'Polen', 'Polen', 'Rumänien', 'Rumänien',
+            # Ozeanien (10)
+            'Neuseeland', 'Neuseeland', 'Neuseeland', 'Australien', 'Australien', 'Australien',
+            'Australien', 'Australien', 'Australien', 'Australien',
             
-            # Ozeanien (21)
-            'Neuseeland', 'Neuseeland', 'Neuseeland', 'Neuseeland', 'Neuseeland', 'Neuseeland',
-            'Australien', 'Australien', 'Australien', 'Australien', 'Australien', 'Australien',
-            'Australien', 'Australien', 'Australien', 'Australien', 'Australien', 'Australien',
-            'Australien', 'Australien', 'Australien',
+            # Afrika (12)
+            'Namibia', 'Botswana', 'Südafrika', 'Südafrika', 'Marokko', 'Marokko',
+            'Algerien', 'Algerien', 'Äthiopien', 'Äthiopien', 'Niger', 'Chad',
             
-            # Afrika (26)
-            'Namibia', 'Namibia', 'Namibia',
-            'Botswana', 'Botswana', 'Botswana',
-            'Südafrika', 'Südafrika', 'Südafrika', 'Südafrika', 'Südafrika', 'Südafrika', 'Südafrika',
-            'Marokko', 'Marokko', 'Marokko',
-            'Algerien', 'Algerien', 'Algerien',
-            'Chad', 'Niger', 'Chad',
-            'Äthiopien', 'Äthiopien', 'Äthiopien',
-            
-            # Asien (47)
-            # Indien (13)
-            'Indien', 'Indien', 'Indien', 'Indien', 'Indien', 'Indien', 'Indien',
-            'Indien', 'Indien', 'Indien', 'Indien', 'Indien', 'Indien',
-            
-            # Nepal & Tibet (10)
-            'Nepal', 'Nepal', 'Nepal', 'Nepal', 'Nepal', 'Nepal', 'Nepal',
-            'Tibet/China', 'Tibet/China', 'Tibet/China',
-            
-            # Zentralasien (11)
-            'Tadschikistan', 'Kirgisistan', 'Mongolei', 'Mongolei', 'Mongolei', 'Mongolei',
-            'Pakistan', 'Pakistan', 'Pakistan', 'Pakistan', 'Pakistan',
-            
-            # China (8)
-            'China', 'China', 'China', 'China', 'China', 'China', 'China', 'China'
+            # Asien (12)
+            'Indien', 'Indien', 'Indien', 'Indien', 'Nepal', 'Nepal', 'Nepal',
+            'Tibet/China', 'Mongolei', 'Tadschikistan', 'Pakistan', 'China'
         ],
         
-        # Koordinaten für alle Standorte
+        
         'Latitude': [
-            # Chile (10)
-            -24.6282, -24.0258, -24.6275, -29.2563, -29.0158, -30.1697, -30.2408,
-            -29.9081, -22.9083, -24.0625,
+            # Chile (8)
+            -24.6282, -24.0258, -24.6275, -29.2563, -29.0158, -30.1697, -29.9081, -22.9083,
             
-            # USA (52) - Realistische Koordinaten
-            19.8207, 19.4756, 20.7097,  # Hawaii
-            36.5054, 33.8792, 33.2778, 35.0089, 36.2677, 34.2256, 33.3533, 37.3414,  # California
-            29.1275, 30.6792, 30.5089,  # Texas
-            41.6628, 38.7331, 38.2972,  # PA, WV, VA
-            44.3500, 45.8968,  # Maine
-            37.5930, 38.2972, 38.7331, 37.6283, 38.4597, 39.2847, 39.2856,  # Utah
-            39.0968, 37.7326, 36.4863,  # California National Parks
-            36.0544, 34.8697, 35.2119, 35.2119,  # Arizona
-            36.0339, 34.0784, 36.7856,  # New Mexico
-            38.5762, 37.7326, 40.3428,  # Colorado
-            44.9778, 43.7904, 44.5900,  # Wyoming
-            43.8554, 47.7511,  # Dakotas
-            48.7596, 58.5000, 63.0695, 64.8378,  # Montana, Alaska
+            # USA (25)
+            19.8207, 36.5054, 33.8792, 37.5930, 38.2972, 38.7331, 39.2856, 36.0544,
+            29.1275, 30.6792, 41.6628, 38.2972, 44.3500, 44.9778, 43.7904,
+            43.8554, 48.7596, 63.0695, 64.8378, 33.3533, 34.2256, 35.2119,
+            34.0784, 38.5762, 37.7326,
             
-            # Kanada (16)
-            52.8737, 51.4968, 49.0500,  # Alberta National Parks
-            45.4532, 45.5017, 46.0126, 44.9481, 42.2619, 42.6548, 45.0000,  # Eastern Canada
-            49.6000, 59.1253, 50.8000, 50.0500, 45.0500, 44.4000,  # Western/Central Canada
+            # Kanada (8)
+            52.8737, 45.4532, 45.5017, 46.0126, 42.2619, 49.6000, 59.1253, 44.4000,
             
-            # Europa - Spanien (14)
-            28.7606, 28.3000, 37.2200, 41.5900, 43.1500, 37.0900,
-            40.3500, 39.4500, 42.8500, 42.5200, 28.3500, 29.0500, 28.1000, 28.0900,
+            # Europa (25)
+            # Spanien (8)
+            28.7606, 28.3000, 37.2200, 41.5900, 43.1500, 37.0900, 39.4500, 28.3500,
+            # Deutschland (5)
+            47.4211, 50.4986, 52.6833, 50.3833, 47.8742,
+            # Frankreich (4)
+            42.9369, 45.8326, 44.2619, 48.9333,
+            # Andere Europa (8)
+            38.2433, 51.8838, 55.0000, 52.1392, 46.5472, 47.0000, 46.2283, 54.9833,
             
-            # Frankreich (10)
-            42.9369, 43.9317, 45.8326, 44.2619, 48.9333, 44.7500,
-            42.8500, 45.0500, 44.1000, 44.9000,
+            # Ozeanien (10)
+            -44.0061, -36.1833, -44.0000, -25.3444, -32.1283, -31.2833, -32.5000, -24.5000, -17.0000, -42.0000,
             
-            # Deutschland (10)
-            47.4211, 50.4986, 51.7993, 47.8742, 52.6833, 50.3833,
-            49.0394, 51.2297, 47.7211, 50.0000,
+            # Afrika (12)
+            -25.0000, -22.0000, -32.2928, -29.1319, 31.7917, 31.0500, 23.0000, 23.2667, 9.1450, 13.2667, 18.5000, 20.0000,
             
-            # Andere Europa (31)
-            38.2433, 38.5000, 41.7000, 32.7500, 37.7500,  # Portugal
-            51.8838, 53.0685, 55.0000, 57.0000,  # Wales, Scotland
-            52.1392, 53.5000,  # Ireland
-            46.2283, 47.5833, 47.8000,  # Hungary
-            54.9833, 57.0000,  # Denmark
-            38.1900, 42.3500, 46.5000, 37.8000,  # Italy
-            46.5472, 45.9833, 46.8000, 46.3000,  # Switzerland
-            47.0000, 47.2000, 47.5000,  # Austria
-            49.2000, 49.0000, 45.5000, 46.0000,  # Poland, Romania
-            
-            # Ozeanien (21)
-            -44.0061, -36.1833, -46.8833, -44.0000, -43.4000, -44.6000,  # New Zealand
-            -25.3444, -25.3000, -24.2000, -32.1283, -37.1500, -33.7000,  # Australia
-            -31.2833, -36.1667, -33.7000, -32.5000, -24.5000, -20.0000,
-            -20.5000, -17.0000, -42.0000,
-            
-            # Afrika (25)
-            -25.0000, -24.5000, -27.5000,  # Namibia
-            -22.0000, -19.0000, -20.5000,  # Botswana
-            -32.2928, -32.3000, -32.4667, -29.1319, -28.7500, -28.4000, -26.0000,  # South Africa
-            31.7917, 31.0500, 30.5000,  # Morocco
-            23.0000, 23.2667, 25.0000,  # Algeria
-            20.0000, 18.5000, 17.0000,  # Chad, Niger
-            9.1450, 13.2667, 7.0000,  # Ethiopia
-            
-            # Asien (47)
-            # Indien (13)
-            34.1526, 32.2432, 34.8797, 33.5000, 33.7000, 34.0000, 32.0000,
-            31.5000, 32.5000, 32.2000, 27.0000, 23.0000, 15.0000,
-            
-            # Nepal & Tibet (10)
-            28.0000, 28.5000, 29.3000, 28.6000, 28.2000, 29.0000, 27.9881,
-            30.0000, 31.0000, 32.0000,
-            
-            # Zentralasien (11)
-            38.5000, 42.0000, 47.0000, 43.0000, 47.0000, 47.5000,
-            36.0000, 35.5000, 36.5000, 35.2000, 35.0000,
-            
-            # China (8)
-            39.0000, 43.5000, 42.0000, 36.0000, 36.5000, 38.0000, 37.0000, 35.0000
+            # Asien (12)
+            34.1526, 32.2432, 33.7000, 27.0000, 28.0000, 28.5000, 29.3000, 30.0000, 43.0000, 38.5000, 36.0000, 39.0000
         ],
         
         'Longitude': [
-            # Chile (10)
-            -70.4034, -67.7558, -70.4033, -70.7369, -70.6919, -70.8150, -70.8039,
-            -70.8217, -68.2650, -67.3000,
+            # Chile (8)
+            -70.4034, -67.7558, -70.4033, -70.7369, -70.6919, -70.8150, -70.8217, -68.2650,
             
-            # USA (52)
-            -155.4681, -155.6083, -156.2533,  # Hawaii
-            -117.0794, -116.4194, -116.1669, -115.2583, -121.8080, -118.0575, -116.8658, -121.6431,  # California
-            -103.2420, -104.0228, -99.0000,  # Texas
-            -77.8261, -79.8333, -78.4569,  # PA, WV, VA
-            -68.2733, -68.6000,  # Maine
-            -112.1660, -111.2615, -109.5925, -110.0067, -109.8569, -110.8231, -114.2669,  # Utah
-            -119.5383, -119.5383, -118.5569,  # California National Parks
-            -112.1401, -111.7533, -111.6647, -111.6647,  # Arizona
-            -107.9628, -106.8200, -103.9728,  # New Mexico
-            -107.7211, -105.5943, -105.6836,  # Colorado
-            -110.5422, -110.8020, -110.5000,  # Wyoming
-            -101.9777, -100.3367,  # Dakotas
-            -113.7870, -153.0000, -153.0000, -147.7164,  # Montana, Alaska
+            # USA (25)
+            -155.4681, -117.0794, -116.4194, -112.1660, -111.2615, -109.5925, -114.2669, -112.1401,
+            -103.2420, -104.0228, -77.8261, -78.4569, -68.2733, -110.5422, -110.8020,
+            -101.9777, -113.7870, -153.0000, -147.7164, -116.8658, -118.0575, -111.6647,
+            -106.8200, -107.7211, -105.5943,
             
-            # Kanada (16)
-            -117.9542, -115.5708, -113.9167,  # Alberta
-            -71.1513, -78.3947, -81.4017, -79.8711, -82.5156, -81.2453, -79.5000,  # Eastern
-            -109.0000, -112.0000, -106.0000, -98.0000, -66.0000, -65.0000,  # Western/Central
+            # Kanada (8)
+            -117.9542, -71.1513, -78.3947, -81.4017, -82.5156, -109.0000, -112.0000, -65.0000,
             
-            # Europa - Spanien (14)
-            -17.8847, -16.6400, -2.5400, 1.1167, -5.0000, -3.1800,
-            -5.5000, -6.5000, 0.5000, -0.5000, -14.0000, -13.8000, -15.4000, -17.1000,
+            # Europa (25)
+            # Spanien (8)
+            -17.8847, -16.6400, -2.5400, 1.1167, -5.0000, -3.1800, -6.5000, -14.0000,
+            # Deutschland (5)
+            10.9850, 9.9406, 12.4167, 6.4167, 8.1058,
+            # Frankreich (4)
+            0.1426, 6.8652, 3.8167, 7.1167,
+            # Andere Europa (8)
+            -7.5000, -3.4360, -4.0000, -9.9267, 7.9853, 13.0000, 18.2167, 12.4500,
             
-            # Frankreich (10)
-            0.1426, 5.7142, 6.8652, 3.8167, 7.1167, 2.0000,
-            0.5000, 6.5000, 7.2000, 6.0000,
+            # Ozeanien (10)
+            170.1409, 175.0833, 170.0000, 131.0369, 138.6283, 149.0167, 129.0000, 127.0000, 128.0000, 147.0000,
             
-            # Deutschland (10)
-            10.9850, 9.9406, 10.6175, 8.1058, 12.4167, 6.4167,
-            13.2833, 9.7400, 11.8000, 11.0000,
+            # Afrika (12)
+            16.0000, 24.0000, 20.0000, 29.4189, -7.0926, -8.0000, 5.0000, 5.5667, 40.4897, 38.2667, 8.0000, 18.0000,
             
-            # Andere Europa (31)
-            -7.5000, -8.0000, -8.5000, -16.9000, -25.6667,  # Portugal
-            -3.4360, -4.0000, -4.0000, -4.0000,  # Wales, Scotland
-            -9.9267, -9.0000,  # Ireland
-            18.2167, 21.1167, 20.0000,  # Hungary
-            12.4500, 10.0000,  # Denmark
-            16.2400, 13.0000, 11.0000, 15.0000,  # Italy
-            7.9853, 7.7500, 9.5000, 8.0000,  # Switzerland
-            13.0000, 14.0000, 13.5000,  # Austria
-            20.0000, 19.0000, 25.0000, 24.0000,  # Poland, Romania
-            
-            # Ozeanien (21)
-            170.1409, 175.0833, 168.1167, 170.0000, 170.5000, 168.0000,  # New Zealand
-            131.0369, 131.2000, 132.0000, 138.6283, 142.5000, 151.0000,  # Australia
-            149.0167, 141.6167, 151.5000, 129.0000, 127.0000, 122.0000,
-            119.0000, 128.0000, 147.0000,
-            
-            # Afrika (25)
-            16.0000, 15.3000, 17.5000,  # Namibia
-            24.0000, 22.5000, 23.0000,  # Botswana
-            20.0000, 20.0000, 19.0000, 29.4189, 17.0000, 20.0000, 20.5000,  # South Africa
-            -7.0926, -8.0000, -7.0000,  # Morocco
-            5.0000, 5.5667, 8.0000,  # Algeria
-            18.0000, 8.0000, 22.0000,  # Chad, Niger
-            40.4897, 38.2667, 39.0000,  # Ethiopia
-            
-            # Asien (47)
-            # Indien (13)
-            77.5771, 78.0647, 77.6408, 77.5000, 78.0000, 77.0000, 78.5000,
-            78.5000, 77.2000, 77.2000, 72.0000, 70.0000, 77.0000,
-            
-            # Nepal & Tibet (10)
-            86.9250, 84.0000, 83.8000, 84.7278, 85.3000, 83.0000, 86.9250,
-            88.0000, 81.0000, 80.0000,
-            
-            # Zentralasien (11)
-            71.0000, 75.0000, 89.0000, 103.0000, 106.0000, 100.0000,
-            76.0000, 75.5000, 74.5000, 75.6000, 74.0000,
-            
-            # China (8)
-            84.0000, 87.0000, 111.0000, 96.0000, 94.0000, 100.0000, 95.0000, 109.0000
+            # Asien (12)
+            77.5771, 78.0647, 78.0000, 72.0000, 86.9250, 84.0000, 83.8000, 88.0000, 103.0000, 71.0000, 76.0000, 84.0000
         ],
         
-        # Höhenangaben (realistisch)
         'Höhe_m': [
-            # Chile (10)
-            2400, 5000, 2635, 2400, 2380, 2200, 2722, 1500, 2300, 4800,
+            # Chile (8)
+            2400, 5000, 2635, 2400, 2380, 2200, 1500, 2300,
             
-            # USA (52)
-            4200, 4169, 3055,  # Hawaii
-            1669, 1230, 600, 900, 350, 1742, 1706, 1283,  # California
-            1200, 2075, 500,  # Texas
-            670, 1483, 1100,  # PA, WV, VA
-            158, 300,  # Maine
-            2400, 1800, 1500, 2000, 1900, 1700, 2000,  # Utah
-            2100, 2100, 1900,  # California NP
-            2100, 1300, 2210, 2210,  # Arizona
-            1900, 2100, 2500,  # New Mexico
-            2700, 2200, 3000,  # Colorado
-            2400, 2300, 1500,  # Wyoming
-            1000, 600,  # Dakotas
-            1040, 200, 650, 134,  # Montana, Alaska
+            # USA (25)
+            4200, 1669, 1230, 2400, 1800, 1500, 2000, 2100, 1200, 2075, 670, 1100, 158, 2400, 2300,
+            1000, 1040, 650, 134, 1706, 1742, 2210, 2100, 2700, 2200,
             
-            # Kanada (16)
-            1200, 1400, 1200, 1114, 400, 500, 300, 200, 180, 250,
-            1000, 200, 700, 800, 100, 50,
+            # Kanada (8)
+            1200, 1114, 400, 500, 200, 1000, 200, 50,
             
-            # Europa - Spanien (14)
-            2396, 2000, 1200, 1000, 1800, 2000, 1400, 500, 1500, 1600,
-            600, 800, 1200, 500,
+            # Europa (25)
+            # Spanien (8)
+            2396, 2000, 1200, 1000, 1800, 2000, 500, 600,
+            # Deutschland (5)
+            2962, 950, 75, 600, 1493,
+            # Frankreich (4)
+            2877, 4809, 800, 600,
+            # Andere Europa (8)
+            152, 520, 350, 344, 3454, 3798, 400, 50,
             
-            # Frankreich (10)
-            2877, 650, 4809, 800, 600, 1200, 1500, 2000, 1800, 1500,
+            # Ozeanien (10)
+            1031, 200, 1000, 348, 800, 600, 150, 400, 400, 1000,
             
-            # Deutschland (10)
-            2962, 950, 1141, 1493, 75, 600, 1365, 754, 1800, 1000,
+            # Afrika (12)
+            1200, 1000, 1200, 2000, 1165, 2000, 800, 1800, 2500, 3000, 1500, 1500,
             
-            # Andere Europa (31)
-            152, 250, 1800, 1200, 800,  # Portugal
-            520, 1085, 350, 700,  # Wales, Scotland
-            344, 400,  # Ireland
-            400, 200, 600,  # Hungary
-            50, 40,  # Denmark
-            1200, 1800, 3343, 3300,  # Italy
-            3454, 3089, 2500, 2000,  # Switzerland
-            3798, 3000, 2500,  # Austria
-            2499, 1600, 2544, 2000,  # Poland, Romania
-            
-            # Ozeanien (21)
-            1031, 200, 100, 1000, 2000, 500,  # New Zealand
-            348, 500, 600, 800, 1167, 300,  # Australia
-            600, 300, 200, 150, 400, 500, 600, 400, 1000,
-            
-            # Afrika (25)
-            1200, 1000, 1500,  # Namibia
-            1000, 900, 1100,  # Botswana
-            1200, 1500, 1800, 2000, 800, 1000, 900,  # South Africa
-            1165, 2000, 1800,  # Morocco
-            800, 1800, 1200,  # Algeria
-            1500, 1500, 1200,  # Chad, Niger
-            2500, 3000, 2800,  # Ethiopia
-            
-            # Asien (47)
-            # Indien (13)
-            3500, 4000, 3200, 3800, 4200, 3600, 3700, 2500, 3000, 2200,
-            400, 100, 1500,
-            
-            # Nepal & Tibet (10)
-            5000, 4200, 3800, 4500, 4000, 4300, 5300, 4500, 4800, 4600,
-            
-            # Zentralasien (11)
-            3800, 3500, 2500, 1500, 1200, 1800, 4000, 4500, 2500, 2200, 3000,
-            
-            # China (8)
-            800, 1200, 1000, 3200, 3500, 2800, 2800, 2000
+            # Asien (12)
+            3500, 4000, 4200, 400, 5000, 4200, 3800, 4500, 1500, 3800, 4000, 800
         ],
         
-        # Bortle-Skala (realistisch nach Standort-Typ)
         'Bortle_Skala': [
-            # Chile (10) - Exzellent
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+            # Chile (8)
+            1, 1, 1, 1, 1, 1, 1, 1,
             
-            # USA (52)
-            1, 1, 2,  # Hawaii
-            1, 2, 1, 1, 3, 2, 2, 3,  # California
-            1, 1, 2,  # Texas
-            2, 2, 3,  # PA, WV, VA
-            3, 2,  # Maine
-            2, 2, 2, 1, 2, 2, 1,  # Utah
-            3, 2, 3,  # California NP
-            2, 3, 2, 2,  # Arizona
-            1, 1, 1,  # New Mexico
-            2, 2, 2,  # Colorado
-            2, 2, 2,  # Wyoming
-            2, 2,  # Dakotas
-            2, 1, 1, 2,  # Montana, Alaska
+            # USA (25)
+            1, 1, 2, 2, 2, 2, 1, 2, 1, 1, 2, 3, 3, 2, 2, 2, 2, 1, 2, 2, 2, 2, 1, 2, 2,
             
-            # Kanada (16)
-            2, 2, 2, 2, 3, 2, 2, 3, 3, 3, 1, 1, 2, 2, 3, 3,
+            # Kanada (8)
+            2, 2, 3, 2, 3, 1, 1, 3,
             
-            # Europa
-            2, 2, 2, 2, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2,  # Spanien (14)
-            2, 2, 2, 3, 3, 3, 3, 2, 2, 2,  # Frankreich (10)
-            2, 3, 3, 2, 2, 3, 3, 2, 2, 3,  # Deutschland (10)
-            2, 2, 3, 2, 2, 3, 2, 2, 3, 3, 3, 2, 2, 2, 2, 2,  # Andere Europa
-            3, 3, 3, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3,  # Fortsetzung Europa
+            # Europa (25)
+            # Spanien (8)
+            2, 2, 2, 2, 3, 3, 3, 2,
+            # Deutschland (5)
+            2, 3, 2, 3, 2,
+            # Frankreich (4)
+            2, 2, 3, 3,
+            # Andere Europa (8)
+            2, 3, 2, 3, 1, 2, 2, 2,
             
-            # Ozeanien (21)
-            1, 2, 1, 2, 2, 2,  # New Zealand
-            1, 1, 1, 1, 2, 3, 2, 2, 2, 1, 1, 1, 1, 1, 2,  # Australia
+            # Ozeanien (10)
+            1, 2, 2, 1, 1, 2, 1, 1, 1, 2,
             
-            # Afrika (25)
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  # Southern Africa
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  # North & East Africa
+            # Afrika (12)
+            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
             
-            # Asien (47)
-            1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 2, 2,  # Indien (13)
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  # Nepal & Tibet (10)
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  # Zentralasien (11)
-            1, 1, 2, 1, 1, 1, 1, 2  # China (8)
+            # Asien (12)
+            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
         ],
         
-        # Klimazonen für bessere Schätzungen
         'Klimazone': [
-            # Chile (10)
-            'desert', 'desert', 'desert', 'desert', 'desert', 'desert', 'desert',
-            'desert', 'desert', 'desert',
+            # Chile (8)
+            'desert', 'desert', 'desert', 'desert', 'desert', 'desert', 'desert', 'desert',
             
-            # USA (52)
-            'oceanic', 'oceanic', 'oceanic',  # Hawaii
-            'desert', 'desert', 'desert', 'desert', 'mediterranean', 'mediterranean', 'mediterranean', 'mediterranean',
-            'desert', 'desert', 'continental',
-            'continental', 'continental', 'continental',
-            'oceanic', 'oceanic',
-            'desert', 'desert', 'desert', 'desert', 'desert', 'desert', 'desert',
-            'continental', 'continental', 'continental',
-            'desert', 'desert', 'continental', 'continental',
-            'desert', 'continental', 'desert',
-            'continental', 'desert', 'continental',
-            'continental', 'continental', 'continental',
-            'continental', 'continental',
-            'continental', 'polar', 'polar', 'polar',
+            # USA (25)
+            'oceanic', 'desert', 'desert', 'desert', 'desert', 'desert', 'desert', 'desert',
+            'desert', 'desert', 'continental', 'continental', 'oceanic', 'continental', 'continental',
+            'continental', 'continental', 'polar', 'polar', 'mediterranean', 'mediterranean', 'continental',
+            'continental', 'continental', 'desert',
             
-            # Kanada (16)
-            'continental', 'continental', 'continental', 'continental', 'continental', 'continental',
-            'continental', 'continental', 'continental', 'continental', 'continental', 'continental',
-            'continental', 'continental', 'oceanic', 'oceanic',
+            # Kanada (8)
+            'continental', 'continental', 'continental', 'continental', 'continental', 'continental', 'continental', 'oceanic',
             
-            # Europa
-            'oceanic', 'oceanic', 'mediterranean', 'continental', 'continental', 'mediterranean',  # Spanien
-            'mediterranean', 'mediterranean', 'continental', 'continental', 'oceanic', 'oceanic', 'oceanic', 'oceanic',
-            'continental', 'mediterranean', 'continental', 'continental', 'continental',  # Frankreich
+            # Europa (25)
+            # Spanien (8)
+            'oceanic', 'oceanic', 'mediterranean', 'continental', 'continental', 'mediterranean', 'mediterranean', 'oceanic',
+            # Deutschland (5)
             'continental', 'continental', 'continental', 'continental', 'continental',
-            'continental', 'continental', 'continental', 'continental', 'continental',  # Deutschland
-            'mediterranean', 'mediterranean', 'continental', 'oceanic', 'oceanic',  # Portugal
-            'oceanic', 'oceanic', 'oceanic', 'oceanic',  # UK
-            'oceanic', 'oceanic',  # Ireland
-            'continental', 'continental', 'continental',  # Hungary
-            'oceanic', 'oceanic',  # Denmark
-            'mediterranean', 'continental', 'continental', 'mediterranean',  # Italy
-            'continental', 'continental', 'continental', 'continental',  # Switzerland
-            'continental', 'continental', 'continental',  # Austria
-            'continental', 'continental', 'continental', 'continental',  # Poland, Romania
+            # Frankreich (4)
+            'continental', 'continental', 'continental', 'continental',
+            # Andere Europa (8)
+            'mediterranean', 'oceanic', 'oceanic', 'oceanic', 'continental', 'continental', 'continental', 'oceanic',
             
-            # Ozeanien (21)
-            'oceanic', 'oceanic', 'oceanic', 'oceanic', 'oceanic', 'oceanic',  # New Zealand
-            'desert', 'desert', 'desert', 'mediterranean', 'oceanic', 'oceanic',  # Australia
-            'oceanic', 'continental', 'oceanic', 'desert', 'desert', 'desert', 'desert', 'tropical', 'oceanic',
+            # Ozeanien (10)
+            'oceanic', 'oceanic', 'oceanic', 'desert', 'mediterranean', 'oceanic', 'desert', 'desert', 'tropical', 'oceanic',
             
-            # Afrika (25)
-            'desert', 'desert', 'desert', 'desert', 'desert', 'desert',
-            'desert', 'desert', 'mediterranean', 'continental', 'desert', 'desert', 'desert',
-            'desert', 'continental', 'continental',
-            'desert', 'desert', 'desert',
-            'desert', 'desert', 'desert',
-            'continental', 'continental', 'continental',
+            # Afrika (12)
+            'desert', 'desert', 'desert', 'continental', 'desert', 'continental', 'desert', 'desert', 'continental', 'continental', 'desert', 'desert',
             
-            # Asien (47)
-            'desert', 'desert', 'desert', 'desert', 'desert', 'desert', 'desert',  # Indien Hochgebirge
-            'continental', 'continental', 'continental', 'desert', 'desert', 'tropical',  # Indien Rest
-            'continental', 'continental', 'continental', 'continental', 'continental', 'continental', 'continental',  # Nepal & Tibet
-            'continental', 'continental', 'continental', 'continental', 'continental', 'continental',  # Zentralasien
-            'continental', 'continental', 'continental', 'continental', 'continental',
-            'desert', 'desert', 'continental', 'continental', 'continental', 'continental', 'continental', 'continental'  # China
+            # Asien (12)
+            'desert', 'desert', 'desert', 'desert', 'continental', 'continental', 'continental', 'continental', 'continental', 'continental', 'continental', 'desert'
         ]
     }
     
@@ -912,16 +637,18 @@ st.sidebar.subheader("📊 Datenbank-Übersicht")
 
 nasa_count = len(enhanced_df[enhanced_df['Datenquelle'].str.contains('NASA')])
 geo_count = len(enhanced_df) - nasa_count
+
+# Angepasste Kontinente-Zählung für 100 Standorte
 continents = {
-    'Europa': len(enhanced_df[enhanced_df['Land'].isin(['Deutschland', 'Frankreich', 'Spanien', 'Italien', 'Portugal', 'Wales', 'Schottland', 'Irland', 'Ungarn', 'Dänemark', 'Schweiz', 'Österreich', 'Polen', 'Rumänien'])]),
+    'Europa': len(enhanced_df[enhanced_df['Land'].isin(['Deutschland', 'Frankreich', 'Spanien', 'Portugal', 'Wales', 'Schottland', 'Irland', 'Schweiz', 'Österreich', 'Ungarn', 'Dänemark'])]),
     'Nordamerika': len(enhanced_df[enhanced_df['Land'].isin(['USA', 'Kanada'])]),
     'Südamerika': len(enhanced_df[enhanced_df['Land'] == 'Chile']),
-    'Asien': len(enhanced_df[enhanced_df['Land'].isin(['Indien', 'Nepal', 'Tibet/China', 'China', 'Pakistan', 'Tadschikistan', 'Kirgisistan', 'Mongolei'])]),
+    'Asien': len(enhanced_df[enhanced_df['Land'].isin(['Indien', 'Nepal', 'Tibet/China', 'China', 'Pakistan', 'Tadschikistan', 'Mongolei'])]),
     'Afrika': len(enhanced_df[enhanced_df['Land'].isin(['Namibia', 'Südafrika', 'Botswana', 'Marokko', 'Algerien', 'Äthiopien', 'Chad', 'Niger'])]),
     'Ozeanien': len(enhanced_df[enhanced_df['Land'].isin(['Australien', 'Neuseeland'])])
 }
 
-st.sidebar.metric("🌍 Gesamt-Standorte", len(enhanced_df), f"+{len(enhanced_df)-29} vs. vorher")
+st.sidebar.metric("🌍 Gesamt-Standorte", len(enhanced_df), f"Premium-Auswahl")
 st.sidebar.metric("🛰️ NASA-Daten", nasa_count, f"{nasa_count/len(enhanced_df)*100:.0f}%")
 
 for continent, count in continents.items():
@@ -967,10 +694,10 @@ continent_filter = st.sidebar.multiselect(
 # Länder Filter basierend auf Kontinenten
 if continent_filter:
     continent_countries = {
-        'Europa': ['Deutschland', 'Frankreich', 'Spanien', 'Italien', 'Portugal', 'Wales', 'Schottland', 'Irland', 'Ungarn', 'Dänemark', 'Schweiz', 'Österreich', 'Polen', 'Rumänien'],
+        'Europa': ['Deutschland', 'Frankreich', 'Spanien', 'Portugal', 'Wales', 'Schottland', 'Irland', 'Schweiz', 'Österreich', 'Ungarn', 'Dänemark'],
         'Nordamerika': ['USA', 'Kanada'],
         'Südamerika': ['Chile'],
-        'Asien': ['Indien', 'Nepal', 'Tibet/China', 'China', 'Pakistan', 'Tadschikistan', 'Kirgisistan', 'Mongolei'],
+        'Asien': ['Indien', 'Nepal', 'Tibet/China', 'China', 'Pakistan', 'Tadschikistan', 'Mongolei'],
         'Afrika': ['Namibia', 'Südafrika', 'Botswana', 'Marokko', 'Algerien', 'Äthiopien', 'Chad', 'Niger'],
         'Ozeanien': ['Australien', 'Neuseeland']
     }
@@ -1452,10 +1179,10 @@ with col5:
 
 st.markdown(f"""
 ---
-**🚀 Ultimative Astrotourismus-Datenbank v2.0**
+**🚀 Astrotourismus-Datenbank v2.0 - Premium Edition**
 
-**📊 Abgedeckte Regionen ({len(enhanced_df)} Standorte):**
-- 🇪🇺 **Europa**: {continents['Europa']} Standorte (Deutschland, Frankreich, Spanien, Italien, Schweiz, Österreich...)
+**📊 Abgedeckte Regionen ({len(enhanced_df)} sorgfältig ausgewählte Standorte):**
+- 🇪🇺 **Europa**: {continents['Europa']} Standorte (Deutschland, Frankreich, Spanien, Schweiz, Österreich...)
 - 🇺🇸 **Nordamerika**: {continents['Nordamerika']} Standorte (USA National Parks, Kanada Dark Sky Preserves)  
 - 🇨🇱 **Südamerika**: {continents['Südamerika']} Standorte (Chile Observatorien & Atacama-Wüste)
 - 🇦🇺 **Ozeanien**: {continents['Ozeanien']} Standorte (Australien & Neuseeland Dark Sky Reserves)
