@@ -2,3 +2,8 @@ streamlit
 pandas
 numpy
 plotly
+requests
+openpyxl
+xlsxwriter
+fastparquet
+pyarrow
